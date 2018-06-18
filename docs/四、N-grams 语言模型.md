@@ -8,7 +8,8 @@
 **Please turn your homework ...**  
 
 希望你们大多数人都能得出这样的结论，一个很可能的词出现了，或者可能已经结束了，但是不太可能是**refrigerator**或**the**。在下面的小节中，我们将通过引入模型来规范化这种直观感觉，这些模型为每个可能的下一个单词分配**概率**。同样的模型也可以为整个句子分配一个概率。例如，这种模型可以预测以下序列中，第一句话比第二句话出现在文本中的概率要高得多:  
-**1. all of a sudden I notice three guys standing on the sidewalk **  
+
+**1. all of a sudden I notice three guys standing on the sidewalk**  
   
 **2. on guys all I of notice sidewalk three a sudden standing the**  
   
