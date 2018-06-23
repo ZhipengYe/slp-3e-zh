@@ -39,3 +39,24 @@ he briefed to reporters the main contents of the statement
 我们将看到如何使用N-gram模型来估计在给定前一个词的情况下没计算后一个词的概率，并为整个序列分配概率。在一些术语歧义中，我们通常省略“模型”一词，因此N-gram一词被用来表示单词序列本身或给它分配概率的预测模型。  
   
 无论是对下一个单词或整个序列的概率进行估计，N-gram模型是语音和语言处理中最重要的工具之一。  
+
+
+
+# 4.1 N-Grams
+让我们从计算概率$P(w|h)$开始吧，这个概率是指给定历史h的条件先单词w的概率，假设h表示“its water is so transparent that”，我们想着到它下一个单词为the的概率，那么就可以表示为：    
+$$P(the\ |\ its\ water\ is\ so\ transparent\ that)  \tag{4.1}$$   
+
+计算这个概率的一种方法是：从一个非常大的词库中计算“its water is so transparent that”的出现的次数，然后计算“its water is so transparent that”后面紧跟单词“the”的次数，这样就可以回答“当我们看到历史 h 的时候，w出现的次数有多少”，正如下面所表示的：  
+$$P(the\ |\ its\ water\ is\ so\ transparent\ that)=\frac{C( its\ water\ is\ so\ transparent\ that\ the )}{C( its\ water\ is\ so\ transparent\ that)} \tag{4.2}$$
+有一个足够大的词库，例如网页，我们可以计算这些序列出现的次数，并且通过公式4.2来估算概率，你也可以在这里暂停一下，去爬取网页数据，然后计算这个概率。
+
+然而这个方法是直接从一些已知的实例中通过计数来估算概率，这就会导致在很多方面，为了获得更好的估算结果，web本身也显得不足够大。这是因为语言是创造性的，引得语句随时都在被创造出来，我们也不是总能统计出所有句子。甚至一条简单的语句在web上的出现次数都会为0（例如Walden Pond’s water is so transparent that the）。
+
+类似的，如果我们想知道整个句子中每个单词的联合概率，如“its water is so transparent ”，我们可能会问自己“在这个5个单词出现的所有可能情况中，‘its water is so transparent’出现了多少次？”，我们将不得不将个整个序列拆分为5个独立的单词，然后统计5个单词出现的所有可能情况，这似乎是一个很大的估算任务。
+
+由于这个原因，我们需要引入更聪明的方法来估计一个单词w在给定历史h下的概率，或者整个单词序列W的概率。让我们从符号的形式化开始。为了表示特定随机变量$X_i$取值" the "或$P(X_i = " the ")$的概率，我们将使用简化后的$P(the)$。我们将把N个单词的序列表示为$w_1···w_n$或$w_{1}^{n}$。对于序列中具有特定值的每个单词的联合概率$P(X = w_1,Y = w_2,Z = w3,···,W = w_n)$我们使用$P(w_1,w_2,···;w_n)$表示。
+
+现在我们如何计算整个序列的概率，比如$P(w_1;w_2;···;w_n)$?，我们可以做的一件事是用概率链法则分解这个概率：
+$$P(X_1 \dots Xn) = P(X_1)P(X_2|X_1)P(X_3|X_1^2)\dots P(X_n|X_1^{n−1})=\prod_{k=1}^n P(X_k|X_1^{k−1}) \tag{4.3}$$
+将链式法则用到单词序列上将得到：
+$$P(w_{1}^{n}) = P(w_1)P(w_2|w_1)P(w_3|w_1^2)\dots P(w_n|w_1^{n−1})=\prod_{k=1}^n P(w_k|w_1^{k−1}) \tag{4.3}$$
